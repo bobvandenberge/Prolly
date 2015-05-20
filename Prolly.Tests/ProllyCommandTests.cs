@@ -102,5 +102,28 @@ namespace Prolly.Tests
             // Assert
             // ExpectedException
         }
+
+        [TestMethod]
+        public void Execute_CircuitBreaker_Opens_After_Succes_When_HalfOpen()
+        {
+            // Arrange
+            var timeoutCommand = new TimeoutCommand(TimeSpan.FromMilliseconds(400));
+            var zeroTimeoutCommand = new TimeoutCommand(TimeSpan.FromMilliseconds(0));
+
+            // Act
+                // First close the CircuitBreaker
+            try { string result = timeoutCommand.Execute(); }
+            catch ( Exception ) { }
+            try { string result = timeoutCommand.Execute(); }
+            catch ( Exception ) { }
+                // Wait for it to get in the HalfOpen state
+            while ( !timeoutCommand.CommandGroup.CircuitBreaker.AllowRequest )
+            { }
+                // So we are HalfOpen now
+            zeroTimeoutCommand.Execute();
+
+            // Assert
+            Assert.IsTrue(zeroTimeoutCommand.CommandGroup.CircuitBreaker.IsClosed);
+        }
     }
 }

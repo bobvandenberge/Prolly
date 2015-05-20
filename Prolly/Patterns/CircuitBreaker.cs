@@ -33,6 +33,14 @@ namespace Prolly.Patterns
             } 
         }
 
+        public bool IsClosed
+        {
+            get
+            {
+                return _state == CircuitBreakerState.Closed;
+            }
+        }
+
         public bool AllowRequest
         {
             get

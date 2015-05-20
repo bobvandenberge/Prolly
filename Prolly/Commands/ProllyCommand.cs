@@ -30,7 +30,7 @@ namespace Prolly.Commands
             try
             {
                 _timeoutPolicy.Monitor(task);
-
+                CommandGroup.CircuitBreaker.MarkSucces();
                 return task.Result;
             }
             catch ( Exception ex )
