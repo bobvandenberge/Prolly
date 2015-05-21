@@ -1,20 +1,21 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prolly.Patterns;
+using Prolly.Patterns.CircuitBreaker;
 
 namespace Prolly.Tests
 {
     [TestClass]
-    public class CircuitBreakerTests
+    public class SimpleCircuitBreakerTests
     {
         [TestMethod]
         public void IsOpen_Default_False()
         {
             // Arrange
-            var sut = new CircuitBreaker();
+            var sut = new SimpleCircuitBreaker();
 
             // Act
-            var result = sut.IsOpen;
+            var result = !sut.AllowRequest;
 
             // Assert
             Assert.IsFalse(result);
@@ -24,11 +25,11 @@ namespace Prolly.Tests
         public void TryBreak_Under_Threshold_Doesnt_Brake()
         {
             // Arrange
-            var sut = new CircuitBreaker();
+            var sut = new SimpleCircuitBreaker();
 
             // Act
             sut.TryBreak();
-            var result = sut.IsOpen;
+            var result = !sut.AllowRequest;
 
             // Assert
             Assert.IsFalse(result);
@@ -38,50 +39,22 @@ namespace Prolly.Tests
         public void TryBreak_On_Threshold_Opens_Breaker()
         {
             // Arrange
-            var sut = new CircuitBreaker();
+            var sut = new SimpleCircuitBreaker();
 
             // Act
             sut.TryBreak();
             sut.TryBreak();
-            var result = sut.IsOpen;
+            var result = !sut.AllowRequest;
 
             // Assert
             Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        public void ForceOpen_Opens_Breaker()
-        {
-            // Arrange
-            var sut = new CircuitBreaker();
-
-            // Act
-            sut.ForceOpen();
-            var result = sut.IsOpen;
-
-            // Assert
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        public void ForceClose_Closes_Breaker()
-        {
-            // Arrange
-            var sut = new CircuitBreaker();
-
-            // Act
-            sut.ForceClose();
-            var result = sut.IsOpen;
-
-            // Assert
-            Assert.IsFalse(result);
         }
 
         [TestMethod, Timeout(500)]
         public void Transition_HalfOpen_After_Specified_Time()
         {
             // Arrange
-            var sut = new CircuitBreaker(2, TimeSpan.FromMilliseconds(0));
+            var sut = new SimpleCircuitBreaker(2, TimeSpan.FromMilliseconds(0));
 
             // Act
             sut.TryBreak();
@@ -96,7 +69,7 @@ namespace Prolly.Tests
         public void MarkSucces_Opens_Breaker_If_Half_Open()
         {
             // Arrange
-            var sut = new CircuitBreaker(2, TimeSpan.FromMilliseconds(0));
+            var sut = new SimpleCircuitBreaker(2, TimeSpan.FromMilliseconds(0));
 
             // Act
             sut.TryBreak();
@@ -104,7 +77,7 @@ namespace Prolly.Tests
             while ( !sut.AllowRequest ) // Just wait for the timer to change the status to HalfOpen
             { }
             sut.MarkSucces();
-            var result = sut.IsOpen;
+            var result = !sut.AllowRequest;
 
             // Assert
             Assert.IsFalse(result);

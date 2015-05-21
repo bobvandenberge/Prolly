@@ -50,7 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CircuitBreakerTests.cs" />
+    <Compile Include="Patterns\CircuitBreaker\SimpleCircuitBreakerTests.cs" />
     <Compile Include="Configuration\SectionsTests.cs" />
     <Compile Include="ProllyCommandTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,7 +58,7 @@
     <Compile Include="TestSupport\SuccesCommand.cs" />
     <Compile Include="TestSupport\TimeoutCommand.cs" />
     <Compile Include="TestSupport\TimeoutCommandWithFallback.cs" />
-    <Compile Include="TimeoutPolicyTests.cs" />
+    <Compile Include="Patterns\Timeout\SimpleTimeoutTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -3,18 +3,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using Prolly.Exceptions;
 using Prolly.Patterns;
+using Prolly.Patterns.Timeout;
 
 namespace Prolly.Tests
 {
     [TestClass]
-    public class TimeoutPolicyTests
+    public class SimpleTimeoutPolicyTests
     {
         [TestMethod]
         [ExpectedException(typeof(TaskNotStartedException))]
         public void Monitor_Throws_Exception_Not_Started_Task()
         {
             // Arrange
-            var sut = new Timeout(TimeSpan.FromMilliseconds(200));
+            var sut = new SimpleTimeout(TimeSpan.FromMilliseconds(200));
 
             // Act
             sut.Monitor(new Task(() => { }));      
@@ -27,7 +28,7 @@ namespace Prolly.Tests
         public void Monitor_Returns_Value_If_Fast_Enough()
         {
             // Arrange
-            var sut = new Timeout(TimeSpan.FromMilliseconds(2000));
+            var sut = new SimpleTimeout(TimeSpan.FromMilliseconds(2000));
             var task = Task<string>.Factory.StartNew(() => {
                 return "prolly";
             });
@@ -45,7 +46,7 @@ namespace Prolly.Tests
         public void Monitor_Throws_Exception_On_Timeout()
         {
             // Arrange
-            var sut = new Timeout(TimeSpan.FromMilliseconds(200));
+            var sut = new SimpleTimeout(TimeSpan.FromMilliseconds(200));
             var task = Task<string>.Factory.StartNew(() =>
             {
                 System.Threading.Thread.Sleep(3000);

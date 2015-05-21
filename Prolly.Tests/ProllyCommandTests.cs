@@ -129,7 +129,7 @@ namespace Prolly.Tests
             zeroTimeoutCommand.Execute();
 
             // Assert
-            Assert.IsTrue(zeroTimeoutCommand.CommandGroup.CircuitBreaker.IsClosed);
+            Assert.IsTrue(zeroTimeoutCommand.CommandGroup.CircuitBreaker.AllowRequest);
         }
 
         [TestMethod]
@@ -158,10 +158,14 @@ namespace Prolly.Tests
 
             // Act
             try { sut.Execute(); }
-            catch ( Exception ) { }
+            catch ( CircuitBreakerIgnoreException ) { }
+            try { sut.Execute(); }
+            catch ( CircuitBreakerIgnoreException ) { }
+            try { sut.Execute(); }
+            catch ( CircuitBreakerIgnoreException ) { }
 
             // Assert
-            Assert.AreEqual(0, sut.CommandGroup.CircuitBreaker.CurrentFailureCount);
+            Assert.IsTrue(sut.CommandGroup.CircuitBreaker.AllowRequest);
         }
     }
 }

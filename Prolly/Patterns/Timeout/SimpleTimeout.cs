@@ -7,13 +7,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Prolly.Patterns
+namespace Prolly.Patterns.Timeout
 {
-    public class Timeout
+    public class SimpleTimeout : ITimeout
     {
         public TimeSpan WaitingTime { get; private set; }
         
-        public Timeout(TimeSpan waitingTime)
+        public SimpleTimeout(TimeSpan waitingTime)
         {
             WaitingTime = waitingTime;
         }

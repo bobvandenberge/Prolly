@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Prolly.Exceptions
 {
+    /// <summary>
+    /// Exception that gets thrown when trying to send a request through 
+    /// a CircuitBreaker while it's open.
+    /// </summary>
     [Serializable]
     public class CircuitBreakerOpenException : Exception
     {

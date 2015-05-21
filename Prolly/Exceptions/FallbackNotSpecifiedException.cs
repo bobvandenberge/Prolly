@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Prolly.Exceptions
 {
+    /// <summary>
+    /// Exception that gets thrown when an ProllyCommand hasn't
+    /// specified a fallback
+    /// </summary>
     [Serializable]
     public class FallbackNotSpecifiedException : Exception
     {

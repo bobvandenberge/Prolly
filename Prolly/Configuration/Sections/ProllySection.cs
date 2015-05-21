@@ -7,8 +7,17 @@ using System.Threading.Tasks;
 
 namespace Prolly.Configuration.Sections
 {
+    /// <summary>
+    /// Used for the configuration of Prolly
+    /// </summary>
     public class ProllySection : ConfigurationSection
     {
+        /// <summary>
+        /// Gets or sets the timeout.
+        /// </summary>
+        /// <value>
+        /// The timeout.
+        /// </value>
         [ConfigurationProperty("timeout")]
         public TimeoutElement Timeout
         {
@@ -20,6 +29,12 @@ namespace Prolly.Configuration.Sections
             { this["timeout"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the circuit breaker.
+        /// </summary>
+        /// <value>
+        /// The circuit breaker.
+        /// </value>
         [ConfigurationProperty("circuitBreaker")]
         public CircuitBreakerElement CircuitBreaker
         {
@@ -32,39 +47,5 @@ namespace Prolly.Configuration.Sections
         }
     }
 
-    public class TimeoutElement : ConfigurationElement
-    {
-        [ConfigurationProperty("miliseconds", DefaultValue = "1000", IsRequired = false)]
-        [IntegerValidator(ExcludeRange = false, MinValue = 100)]
-        public int Miliseconds
-        {
-            get
-            { return (int) this["miliseconds"]; }
-            set
-            { this["miliseconds"] = value; }
-        }
-    }
-
-    public class CircuitBreakerElement : ConfigurationElement
-    {
-        [ConfigurationProperty("allowedFailures", DefaultValue = "2", IsRequired = false)]
-        [IntegerValidator(ExcludeRange = false, MinValue = 0)]
-        public int AllowedFailures
-        {
-            get
-            { return (int) this["allowedFailures"]; }
-            set
-            { this["allowedFailures"] = value; }
-        }
-
-        [ConfigurationProperty("openTimeInMiliseconds", DefaultValue = "1000", IsRequired = false)]
-        [IntegerValidator(ExcludeRange = false, MinValue = 100)]
-        public int OpenTimeInMiliseconds
-        {
-            get
-            { return (int) this["openTimeInMiliseconds"]; }
-            set
-            { this["openTimeInMiliseconds"] = value; }
-        }
-    }
+    
 }

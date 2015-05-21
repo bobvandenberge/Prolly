@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace Prolly.Configuration
 {
+    /// <summary>
+    /// Default configuration that ICircuitBreaker implementations should use
+    /// </summary>
     public static class CircuitBreakerConfiguration
     {
+        /// <summary>
+        /// Gets the time open.
+        /// </summary>
+        /// <value>
+        /// The time open.
+        /// </value>
         public static TimeSpan TimeOpen
         {
             get
@@ -16,6 +25,12 @@ namespace Prolly.Configuration
             }
         }
 
+        /// <summary>
+        /// Gets the allowed failures.
+        /// </summary>
+        /// <value>
+        /// The allowed failures.
+        /// </value>
         public static int AllowedFailures
         {
             get

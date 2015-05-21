@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Prolly.Exceptions
 {
+    /// <summary>
+    /// Exception that gets thrown when an task that is not yet started is
+    /// giving to the SimpleTimeout
+    /// </summary>
     [Serializable]
     public class TaskNotStartedException : Exception
     {
