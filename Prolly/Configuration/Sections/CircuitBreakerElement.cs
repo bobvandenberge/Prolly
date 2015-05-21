@@ -12,7 +12,7 @@ namespace Prolly.Configuration.Sections
     public class CircuitBreakerElement : ConfigurationElement
     {
         /// <summary>
-        /// Gets or sets the amount of times a failure is allowed before the circuit breaker opens
+        /// Gets the amount of times a failure is allowed before the circuit breaker opens
         /// </summary>
         /// <value>
         /// The amount of times a failure is allowed before the circuit breaker opens
@@ -23,12 +23,10 @@ namespace Prolly.Configuration.Sections
         {
             get
             { return (int) this["allowedFailures"]; }
-            set
-            { this["allowedFailures"] = value; }
         }
 
         /// <summary>
-        /// Gets or sets the time in miliseconds the circuit breaker will remain open. Once the time passes it wil go into the HalfOpen state
+        /// Gets the time in miliseconds the circuit breaker will remain open. Once the time passes it wil go into the HalfOpen state
         /// </summary>
         /// <value>
         /// The time in miliseconds the circuit breaker will remain open. Once the time passes it wil go into the HalfOpen state.
@@ -39,8 +37,6 @@ namespace Prolly.Configuration.Sections
         {
             get
             { return (int) this["openTimeInMiliseconds"]; }
-            set
-            { this["openTimeInMiliseconds"] = value; }
         }
     }
 }

@@ -25,8 +25,6 @@ namespace Prolly.Configuration.Sections
             {
                 return (TimeoutElement) this["timeout"];
             }
-            set
-            { this["timeout"] = value; }
         }
 
         /// <summary>
@@ -42,8 +40,6 @@ namespace Prolly.Configuration.Sections
             {
                 return (CircuitBreakerElement) this["circuitBreaker"];
             }
-            set
-            { this["circuitBreaker"] = value; }
         }
     }
 

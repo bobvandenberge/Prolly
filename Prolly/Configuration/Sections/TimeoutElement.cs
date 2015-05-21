@@ -23,8 +23,6 @@ namespace Prolly.Configuration.Sections
         {
             get
             { return (int) this["miliseconds"]; }
-            set
-            { this["miliseconds"] = value; }
         }
     }
 }
