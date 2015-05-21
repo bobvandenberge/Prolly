@@ -74,3 +74,9 @@ The configurations will automatically be applied.
         <circuitBreaker allowedFailures="2" openTimeInMiliseconds="200" />
       </prolly>
     </prollySettings>
+
+## Extra ##
+
+### CircuitBreakerIgnoreException ###
+
+Sometimes you don't want the circuit breaker to register certain exceptions but want to cascade them upwards. You can do this in Prolly by encapsulating your exception inside an CircuitBreakerIgnoreException. This way the circuit breaker will ignore it.
