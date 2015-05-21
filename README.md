@@ -4,7 +4,7 @@ Really lightweight and simple Circuit Breaker / Timeout library for .NET. Inspir
 
 ## Usage ##
 
-### Step 1 : Inherit an command from ProllyCommand&lt;T&gt; 
+### Step 1 : Inherit a command from ProllyCommand 
 To create a prolly command, create a new class and let it inherit from ProllyCommand&lt;T&gt;. The T should be the return value. Currently void methods aren't supported. This is planned for the future.
 
 When you create a new command you have to specify the command group it belongs to. All commands in a certain command group use the same circuit breaker. You can specify a command group by a key. If it doesn't exist yet, it will be automatically created.
@@ -25,8 +25,8 @@ When you create a new command you have to specify the command group it belongs t
 ### Step 2 : Execute the command
 After a new command is created you can execute it by calling the Execute() method. 
 
-            var command = new DemoCommand();
-            command.Execute();
+	var command = new DemoCommand();
+	command.Execute();
 
 ### Step 3 (optional) : Specifying a fallback
 It might be desirable to return a value instead of an exception when an call couldn't be executed properly. For this you can override the Fallback method inside your custom command.
