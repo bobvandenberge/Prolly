@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prolly.Patterns;
+using Prolly.Configuration;
 
 namespace Prolly.Tests.Configuration
 {
@@ -8,39 +9,34 @@ namespace Prolly.Tests.Configuration
     public class SectionsTests
     {
         [TestMethod]
-        public void Default_Timeout_WaitingTime_Loaded_From_Configuration()
+        public void TimeoutConfiguration_WaitingTime_Loaded_From_Configuration()
         {
             // Arrange
-            var sut = new Timeout();
-
             // Act
-            var result = sut.WaitingTime;
+            var result = TimeoutConfiguration.WaitingTime;
 
             // Assert
             Assert.AreEqual(200, (int) result.TotalMilliseconds);
         }
 
         [TestMethod]
-        public void Default_CircuitBreaker_AllowedFailures_Loaded_From_Configuration()
+        public void CircuitBreakerConfiguration_AllowedFailures_Loaded_From_Configuration()
         {
             // Arrange
-            var sut = new CircuitBreaker();
-
             // Act
-            int result = sut.AllowedFailures;
+            int result = CircuitBreakerConfiguration.AllowedFailures;
 
             // Assert
             Assert.AreEqual(2, result);
         }
         
         [TestMethod]
-        public void Default_CircuitBreaker_TimeOpen_Loaded_From_Configuration()
+        public void CircuitBreakerConfiguration_TimeOpen_Loaded_From_Configuration()
         {
             // Arrange
-            var sut = new CircuitBreaker();
 
             // Act
-            int result = (int) sut.TimeOpen.TotalMilliseconds;
+            int result = (int) CircuitBreakerConfiguration.TimeOpen.TotalMilliseconds;
 
             // Assert
             Assert.AreEqual(200, result);

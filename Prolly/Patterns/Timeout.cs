@@ -12,10 +12,6 @@ namespace Prolly.Patterns
     public class Timeout
     {
         public TimeSpan WaitingTime { get; private set; }
-
-        public Timeout()
-            : this(TimeoutConfiguration.WaitingTime)
-        { }
         
         public Timeout(TimeSpan waitingTime)
         {

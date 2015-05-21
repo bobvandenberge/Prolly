@@ -54,6 +54,7 @@
     <Compile Include="Configuration\SectionsTests.cs" />
     <Compile Include="ProllyCommandTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSupport\CircuitBreakerIgnoreExceptionCommand.cs" />
     <Compile Include="TestSupport\SuccesCommand.cs" />
     <Compile Include="TestSupport\TimeoutCommand.cs" />
     <Compile Include="TestSupport\TimeoutCommandWithFallback.cs" />

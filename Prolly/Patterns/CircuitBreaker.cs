@@ -10,8 +10,8 @@ namespace Prolly.Patterns
     public class CircuitBreaker
     {
         private CircuitBreakerState _state = CircuitBreakerState.Closed;
-        private int _tries = 0;
 
+        public int CurrentFailureCount { get; private set; }
         public int AllowedFailures { get; private set; }
         public TimeSpan TimeOpen { get; private set; }
 
@@ -19,6 +19,8 @@ namespace Prolly.Patterns
         {
             AllowedFailures = allowedFailures;
             TimeOpen = openTime;
+            CurrentFailureCount = 0;
+
         }
 
         public CircuitBreaker()
@@ -54,13 +56,13 @@ namespace Prolly.Patterns
             if ( _state == CircuitBreakerState.HalfOpen )
             {
                 _state = CircuitBreakerState.Closed;
-                _tries = 0;
+                CurrentFailureCount = 0;
             }
         }
 
         public void TryBreak()
         {
-            if(++_tries >= AllowedFailures)
+            if(++CurrentFailureCount >= AllowedFailures)
             {
                 _state = CircuitBreakerState.Open;
                 StartOpenTimer();

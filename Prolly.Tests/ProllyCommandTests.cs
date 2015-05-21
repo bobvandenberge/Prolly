@@ -149,5 +149,19 @@ namespace Prolly.Tests
             // Assert
             Assert.AreEqual(result, TimeoutCommandWithFallback.FallbackValue);
         }
+
+        [TestMethod]
+        public void CircuitBreakerIgnoreException_Doesnt_Trigger_CircuitBreaker()
+        {
+            // Arrange
+            var sut = new CircuitBreakerIgnoreExceptionCommand();
+
+            // Act
+            try { sut.Execute(); }
+            catch ( Exception ) { }
+
+            // Assert
+            Assert.AreEqual(0, sut.CommandGroup.CircuitBreaker.CurrentFailureCount);
+        }
     }
 }

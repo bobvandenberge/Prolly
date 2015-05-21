@@ -1,4 +1,5 @@
-﻿using Prolly.Exceptions;
+﻿using Prolly.Configuration;
+using Prolly.Exceptions;
 using Prolly.Patterns;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,18 @@ namespace Prolly.Commands
 {
     public abstract class ProllyCommand<T>
     {
-        private Patterns.Timeout _timeoutPolicy = new Patterns.Timeout();
+        private Patterns.Timeout _timeoutPolicy;
 
         public CommandGroup CommandGroup { get; private set; }
 
         public ProllyCommand(string commandGroupName)
+            : this(commandGroupName, TimeoutConfiguration.WaitingTime)
+        { }
+
+        public ProllyCommand(string commandGroupName, TimeSpan timeout)
         {
             CommandGroup = CommandGroupFactory.Resolve(commandGroupName);
+            _timeoutPolicy = new Patterns.Timeout(timeout);
         }
 
         public T Execute()
@@ -35,10 +41,25 @@ namespace Prolly.Commands
             }
             catch ( Exception ex )
             {
+                if(ShouldBypassCircuitBreaker(ex))
+                {
+                    throw ( ex as AggregateException ).InnerException;
+                }
+
                 CommandGroup.CircuitBreaker.TryBreak();
 
                 return TryFallback(ex);
             }
+        }
+
+        private bool ShouldBypassCircuitBreaker(Exception ex)
+        {
+            if ( ex is AggregateException )
+            {
+                return ( ex as AggregateException ).InnerException is CircuitBreakerIgnoreException;
+            }
+
+            return false;
         }
 
         public Task<T> ExecuteAsync()

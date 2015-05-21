@@ -27,7 +27,7 @@ namespace Prolly.Tests
         public void Monitor_Returns_Value_If_Fast_Enough()
         {
             // Arrange
-            var sut = new Timeout(TimeSpan.FromMilliseconds(200));
+            var sut = new Timeout(TimeSpan.FromMilliseconds(2000));
             var task = Task<string>.Factory.StartNew(() => {
                 return "prolly";
             });
