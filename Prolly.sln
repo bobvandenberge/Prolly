@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prolly", "Prolly\Prolly.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prolly.Tests", "Prolly.Tests\Prolly.Tests.csproj", "{A0286478-B997-4E23-9D5C-5B6584FB3F37}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A616F728-3D58-4322-86B5-3A8ED85C5A98}"
+	ProjectSection(SolutionItems) = preProject
+		Prolly.0.1.nupkg = Prolly.0.1.nupkg
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
