@@ -8,6 +8,12 @@ namespace Prolly.Tests
     [TestClass]
     public class ProllyCommandTests
     {
+        [TestInitialize()]
+        public void Initialize()
+        {
+            Prolly.Commands.CommandGroupFactory.Reset();
+        }
+
         [TestMethod]
         public void Execute_Returns_Run_Value()
         {
@@ -107,7 +113,7 @@ namespace Prolly.Tests
         public void Execute_CircuitBreaker_Opens_After_Succes_When_HalfOpen()
         {
             // Arrange
-            var timeoutCommand = new TimeoutCommand(TimeSpan.FromMilliseconds(400));
+            var timeoutCommand = new TimeoutCommand(TimeSpan.FromMilliseconds(2000));
             var zeroTimeoutCommand = new TimeoutCommand(TimeSpan.FromMilliseconds(0));
 
             // Act
@@ -124,6 +130,24 @@ namespace Prolly.Tests
 
             // Assert
             Assert.IsTrue(zeroTimeoutCommand.CommandGroup.CircuitBreaker.IsClosed);
+        }
+
+        [TestMethod]
+        public void Execute_Returns_Fallback_When_Open()
+        {
+            // Arrange
+            var sut = new TimeoutCommandWithFallback(TimeSpan.FromMilliseconds(400));
+
+            // Act
+            try { sut.Execute(); }
+            catch ( Exception ) { }
+            try { sut.Execute(); }
+            catch ( Exception ) { }
+
+            string result = sut.Execute();
+
+            // Assert
+            Assert.AreEqual(result, TimeoutCommandWithFallback.FallbackValue);
         }
     }
 }

@@ -20,5 +20,10 @@ namespace Prolly.Commands
                 
             return groups[commandGroupName];
         }
+
+        public static void Reset()
+        {
+            groups.Clear();
+        }
     }
 }

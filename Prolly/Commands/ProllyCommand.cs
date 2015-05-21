@@ -22,13 +22,13 @@ namespace Prolly.Commands
 
         public T Execute()
         {
-            if ( !CommandGroup.CircuitBreaker.AllowRequest )
-                throw new CircuitBreakerOpenException("Cannot execute. The CircuitBreaker is Open.");
-
-            Task<T> task = RunAsync();
-
             try
             {
+                if ( !CommandGroup.CircuitBreaker.AllowRequest )
+                    throw new CircuitBreakerOpenException("Cannot execute. The CircuitBreaker is Open.");
+
+                Task<T> task = RunAsync();
+            
                 _timeoutPolicy.Monitor(task);
                 CommandGroup.CircuitBreaker.MarkSucces();
                 return task.Result;
