@@ -45,7 +45,11 @@
     <Compile Include="Configuration\Sections\CircuitBreakerElement.cs" />
     <Compile Include="Configuration\Sections\TimeoutElement.cs" />
     <Compile Include="Exceptions\CircuitBreakerIgnoreException.cs" />
-    <Compile Include="Patterns\CircuitBreaker\CircuitBreakerState.cs" />
+    <Compile Include="Patterns\CircuitBreaker\HealthPolicy.cs" />
+    <Compile Include="Patterns\CircuitBreaker\States\ClosedState.cs" />
+    <Compile Include="Patterns\CircuitBreaker\States\HalfOpenState.cs" />
+    <Compile Include="Patterns\CircuitBreaker\States\ICircuitBreakerState.cs" />
+    <Compile Include="Patterns\CircuitBreaker\States\OpenState.cs" />
     <Compile Include="Patterns\ICircuitBreaker.cs" />
     <Compile Include="Patterns\CircuitBreaker\SimpleCircuitBreaker.cs" />
     <Compile Include="Commands\CommandGroup.cs" />

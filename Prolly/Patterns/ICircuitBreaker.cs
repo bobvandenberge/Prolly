@@ -13,13 +13,13 @@ namespace Prolly.Patterns
         /// <value>
         ///   <c>true</c> if requests are allowed; otherwise, <c>false</c>.
         /// </value>
-        bool AllowRequest { get; }
+        bool AllowRequests { get; }
 
         /// <summary>
         /// A message was handeld succesfully. If the CircuitBreaker is in an
         /// HalfOpen state then the CircuitBreaker will be restored
         /// </summary>
-        void MarkSucces();
+        void TryRestore();
 
         /// <summary>
         /// Try to break the CircuitBreaker. This will succeed if the number of

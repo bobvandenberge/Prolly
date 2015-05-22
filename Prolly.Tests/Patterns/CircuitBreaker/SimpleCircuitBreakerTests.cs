@@ -15,7 +15,7 @@ namespace Prolly.Tests
             var sut = new SimpleCircuitBreaker();
 
             // Act
-            var result = !sut.AllowRequest;
+            var result = !sut.AllowRequests;
 
             // Assert
             Assert.IsFalse(result);
@@ -29,7 +29,7 @@ namespace Prolly.Tests
 
             // Act
             sut.TryBreak();
-            var result = !sut.AllowRequest;
+            var result = !sut.AllowRequests;
 
             // Assert
             Assert.IsFalse(result);
@@ -44,7 +44,7 @@ namespace Prolly.Tests
             // Act
             sut.TryBreak();
             sut.TryBreak();
-            var result = !sut.AllowRequest;
+            var result = !sut.AllowRequests;
 
             // Assert
             Assert.IsTrue(result);
@@ -61,7 +61,7 @@ namespace Prolly.Tests
             sut.TryBreak();
 
             // Assert
-            while(!sut.AllowRequest) // Just wait for the timer to change the status to HalfOpen
+            while(!sut.AllowRequests) // Just wait for the timer to change the status to HalfOpen
             {}
         }
 
@@ -74,10 +74,10 @@ namespace Prolly.Tests
             // Act
             sut.TryBreak();
             sut.TryBreak();
-            while ( !sut.AllowRequest ) // Just wait for the timer to change the status to HalfOpen
+            while ( !sut.AllowRequests ) // Just wait for the timer to change the status to HalfOpen
             { }
-            sut.MarkSucces();
-            var result = !sut.AllowRequest;
+            sut.TryRestore();
+            var result = !sut.AllowRequests;
 
             // Assert
             Assert.IsFalse(result);

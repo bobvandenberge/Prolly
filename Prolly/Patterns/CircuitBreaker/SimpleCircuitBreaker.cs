@@ -1,4 +1,5 @@
 ﻿using Prolly.Configuration;
+using Prolly.Patterns.CircuitBreaker.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,21 +13,18 @@ namespace Prolly.Patterns.CircuitBreaker
     /// </summary>
     public class SimpleCircuitBreaker : ICircuitBreaker
     {
-        private CircuitBreakerState _state = CircuitBreakerState.Closed;
-        private int _allowedFailures;
-        private TimeSpan _timeOpen;
-        private int _currentFailureCount;
+        public ICircuitBreakerState State { get; set; }
+        public HealthPolicy Policy { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleCircuitBreaker"/> class.
         /// </summary>
         /// <param name="allowedFailures">The amount of times a failure is allowed before the circuit breaker opens</param>
-        /// <param name="openTime">The time in miliseconds the circuit breaker will remain open. Once the time passes it wil go into the HalfOpen state.</param>
-        public SimpleCircuitBreaker(int allowedFailures, TimeSpan openTime)
+        /// <param name="timeOpen">The time in miliseconds the circuit breaker will remain open. Once the time passes it wil go into the HalfOpen state.</param>
+        public SimpleCircuitBreaker(int allowedFailures, TimeSpan timeOpen)
         {
-            _allowedFailures = allowedFailures;
-            _timeOpen = openTime;
-            _currentFailureCount = 0;
+            State = new ClosedState(this);
+            Policy = new HealthPolicy(allowedFailures, timeOpen);
         }
 
         /// <summary>
@@ -42,11 +40,11 @@ namespace Prolly.Patterns.CircuitBreaker
         /// <value>
         ///   <c>true</c> if requests are allowed; otherwise, <c>false</c>.
         /// </value>
-        public bool AllowRequest
+        public bool AllowRequests
         {
             get
             {
-                return _state == CircuitBreakerState.Closed || _state == CircuitBreakerState.HalfOpen;
+                return State.AllowRequests;
             }
         }
 
@@ -54,12 +52,12 @@ namespace Prolly.Patterns.CircuitBreaker
         /// A message was handeld succesfully. If the CircuitBreaker is in an
         /// HalfOpen state then the CircuitBreaker will be restored
         /// </summary>
-        public void MarkSucces()
+        public void TryRestore()
         {
-            if ( _state == CircuitBreakerState.HalfOpen )
+            if (State is HalfOpenState)
             {
-                _state = CircuitBreakerState.Closed;
-                _currentFailureCount = 0;
+                State = new ClosedState(this);
+                Policy.Reset();
             }
         }
 
@@ -69,22 +67,12 @@ namespace Prolly.Patterns.CircuitBreaker
         /// </summary>
         public void TryBreak()
         {
-            if(++_currentFailureCount >= _allowedFailures)
+            Policy.FailureOccured();
+
+            if(!Policy.IsHealthy)
             {
-                _state = CircuitBreakerState.Open;
-                StartOpenTimer();
+                State = new OpenState(this);
             }
-        }
-
-        private void StartOpenTimer()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                System.Threading.Thread.Sleep(_timeOpen);
-
-                if(_state == CircuitBreakerState.Open)
-                    _state = CircuitBreakerState.HalfOpen;
-            });
         }
     }
 }

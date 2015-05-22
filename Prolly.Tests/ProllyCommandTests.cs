@@ -123,13 +123,13 @@ namespace Prolly.Tests
             try { string result = timeoutCommand.Execute(); }
             catch ( Exception ) { }
                 // Wait for it to get in the HalfOpen state
-            while ( !timeoutCommand.CommandGroup.CircuitBreaker.AllowRequest )
+            while ( !timeoutCommand.CommandGroup.CircuitBreaker.AllowRequests )
             { }
                 // So we are HalfOpen now
             zeroTimeoutCommand.Execute();
 
             // Assert
-            Assert.IsTrue(zeroTimeoutCommand.CommandGroup.CircuitBreaker.AllowRequest);
+            Assert.IsTrue(zeroTimeoutCommand.CommandGroup.CircuitBreaker.AllowRequests);
         }
 
         [TestMethod]
@@ -165,7 +165,7 @@ namespace Prolly.Tests
             catch ( CircuitBreakerIgnoreException ) { }
 
             // Assert
-            Assert.IsTrue(sut.CommandGroup.CircuitBreaker.AllowRequest);
+            Assert.IsTrue(sut.CommandGroup.CircuitBreaker.AllowRequests);
         }
     }
 }

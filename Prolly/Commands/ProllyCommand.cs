@@ -55,13 +55,13 @@ namespace Prolly.Commands
         {
             try
             {
-                if ( !CommandGroup.CircuitBreaker.AllowRequest )
+                if ( !CommandGroup.CircuitBreaker.AllowRequests )
                     throw new CircuitBreakerOpenException("Cannot execute. The CircuitBreaker is Open.");
 
                 Task<T> task = RunAsync();
             
                 _timeout.Monitor(task);
-                CommandGroup.CircuitBreaker.MarkSucces();
+                CommandGroup.CircuitBreaker.TryRestore();
                 return task.Result;
             }
             catch ( Exception ex )
