@@ -18,33 +18,25 @@ namespace Prolly.Commands
     public abstract class ProllyCommand<T>
     {
         private static object _lock = new object();
-        private AbstractTimeout _timeout;
 
+        public AbstractTimeout Timeout { get; private set; }
         public CommandGroupKey CommandGroupKey { get; private set; }
         public CommandKey CommandKey { get; private set; }
         public AbstractCircuitBreaker CircuitBreaker { get; private set; }
         public AbstractBulkhead Bulkhead { get; private set; }
+        public CommandMetrics Metrics { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProllyCommand{T}"/> class.
-        /// Uses the <see cref="Patterns.Timeout.SimpleTimeout"/> as implementation of the <see cref="Patterns.AbstractTimeout"/>
         /// </summary>
         /// <param name="commandGroupkey">The command group.</param>
         public ProllyCommand(CommandGroupKey commandGroupkey)
-            : this(commandGroupkey, AbstractTimeout.Factory.Resolve(commandGroupkey))
-        { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProllyCommand{T}"/> class.
-        /// </summary>
-        /// <param name="commandGroupkey">The command group.</param>
-        /// <param name="timeout">The timeout.</param>
-        public ProllyCommand(CommandGroupKey commandGroupkey, AbstractTimeout timeout)
         {
             CommandGroupKey = commandGroupkey;
             CircuitBreaker = AbstractCircuitBreaker.Factory.Resolve(commandGroupkey);
             Bulkhead = AbstractBulkhead.Factory.Resolve(commandGroupkey);
-            _timeout = timeout;
+            Timeout = AbstractTimeout.Factory.Resolve(commandGroupkey);
+            Metrics = CommandMetrics.Factory.Resolve(commandGroupkey);
         }
 
         /// <summary>
@@ -68,11 +60,11 @@ namespace Prolly.Commands
                     if ( !Bulkhead.HasRoom )
                         throw new MaximumAllowedTasksReachedException("Cannot execute. Maximum amount of tasks already reached.");
 
-                    Bulkhead.TaskStarted();
+                    Bulkhead.MarkExecution();
                     task.Start();
                 }
 
-                _timeout.Monitor(task);
+                Timeout.Monitor(task);
 
                 CircuitBreaker.MarkSucces();
                 return task.Result;
@@ -94,7 +86,7 @@ namespace Prolly.Commands
             }
             finally
             {
-                Bulkhead.TaskFinished();
+                Bulkhead.MarkCompletion();
             }
         }
 

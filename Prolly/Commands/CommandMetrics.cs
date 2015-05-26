@@ -13,19 +13,29 @@ namespace Prolly.Commands
     public abstract class CommandMetrics
     {
         /// <summary>
-        /// A value indicating whether or not the current state is healthy
+        /// Gets the amount of succesful tries.
         /// </summary>
-        public abstract bool IsHealthy { get; }
+        public abstract int Succes { get; }
 
         /// <summary>
-        /// The time the circuit is supposed to stay open before returning to the half open state
+        /// Gets the amount of failed tries
         /// </summary>
-        public abstract TimeSpan TimeOpen { get; }
+        public abstract int Failure { get; }
+
+        /// <summary>
+        /// Gets the error percentage.
+        /// </summary>
+        public abstract int ErrorPercentage { get; }
 
         /// <summary>
         /// Indicate that a failure has occured
         /// </summary>
-        public abstract void FailureOccured();
+        public abstract void MarkFailure();
+
+        /// <summary>
+        /// Indicate that a action was succesfull
+        /// </summary>
+        public abstract void MarkSucces();
 
         /// <summary>
         /// Reset the metrics
@@ -62,47 +72,53 @@ namespace Prolly.Commands
 
             private class SimpleCommandMetrics : CommandMetrics
             {
-                private int _currentFailureCount = 0;
-                private int _allowedFailures;
-                private TimeSpan _timeOpen;
+                private int _succes;
+                private int _failure;
 
                 /// <summary>
-                /// Initializes a new instance of the <see cref="SimpleCommandMetrics"/> class.
+                /// Gets the amount of succesful tries.
                 /// </summary>
-                public SimpleCommandMetrics()
+                public override int Succes
                 {
-                    _allowedFailures = CircuitBreakerConfiguration.AllowedFailures;
-                    _timeOpen = CircuitBreakerConfiguration.TimeOpen;
+                    get { return _succes; }
                 }
 
                 /// <summary>
-                /// A value indicating whether or not the current state is healthy
+                /// Gets the amount of failed tries
                 /// </summary>
-                public override bool IsHealthy
+                public override int Failure
                 {
-                    get
-                    {
-                        return !(_currentFailureCount >= _allowedFailures);
-                    }
+                    get { return _failure; }
                 }
 
                 /// <summary>
-                /// The time the circuit is supposed to stay open before returning to the half open state
+                /// Gets the error percentage.
                 /// </summary>
-                public override TimeSpan TimeOpen
+                public override int ErrorPercentage
                 {
-                    get
+                    get 
                     {
-                        return _timeOpen;
+                        if ( _failure == 0 && _succes != 0 )
+                            return 0;
+
+                        if ( _failure != 0 && _succes == 0 )
+                            return 100;
+
+                        return (_failure / (_succes + _failure)) * 100 ;
                     }
                 }
 
                 /// <summary>
                 /// Indicate that a failure has occured
                 /// </summary>
-                public override void FailureOccured()
+                public override void MarkFailure()
                 {
-                    _currentFailureCount++;
+                    _failure++;
+                }
+
+                public override void MarkSucces()
+                {
+                    _succes++;
                 }
 
                 /// <summary>
@@ -110,7 +126,8 @@ namespace Prolly.Commands
                 /// </summary>
                 public override void Reset()
                 {
-                    _currentFailureCount = 0;
+                    _succes = 0;
+                    _failure = 0;
                 }
             }
         }

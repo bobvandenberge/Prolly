@@ -52,11 +52,11 @@ namespace Prolly.Tests.Patterns.Bulkhead
             
             // Act
             Task t = Task.Factory.StartNew(() => { });
-            bulkhead.TaskStarted();
-            bulkhead.TaskStarted();
+            bulkhead.MarkExecution();
+            bulkhead.MarkExecution();
             t.Wait();
-            bulkhead.TaskFinished();
-            bulkhead.TaskFinished();
+            bulkhead.MarkCompletion();
+            bulkhead.MarkCompletion();
 
             // Assert
             Assert.IsTrue(bulkhead.HasRoom);
@@ -70,8 +70,8 @@ namespace Prolly.Tests.Patterns.Bulkhead
             AbstractBulkhead bulkhead = AbstractBulkhead.Factory.Resolve(key);
 
             // Act
-            bulkhead.TaskStarted();
-            bulkhead.TaskStarted();
+            bulkhead.MarkExecution();
+            bulkhead.MarkExecution();
 
             // Assert
             Assert.IsFalse(bulkhead.HasRoom);
@@ -86,9 +86,9 @@ namespace Prolly.Tests.Patterns.Bulkhead
             AbstractBulkhead bulkhead = AbstractBulkhead.Factory.Resolve(key);
 
             // Act
-            bulkhead.TaskStarted();
-            bulkhead.TaskStarted();
-            bulkhead.TaskStarted();
+            bulkhead.MarkExecution();
+            bulkhead.MarkExecution();
+            bulkhead.MarkExecution();
 
             // Assert
             // Expected Exception

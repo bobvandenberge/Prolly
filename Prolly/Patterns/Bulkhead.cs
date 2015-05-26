@@ -23,12 +23,12 @@ namespace Prolly.Patterns
         /// <summary>
         /// Register that a task has been started
         /// </summary>
-        public abstract void TaskStarted();
+        public abstract void MarkExecution();
 
         /// <summary>
         /// Register that a task has finished
         /// </summary>
-        public abstract void TaskFinished();
+        public abstract void MarkCompletion();
 
         public static class Factory
         {
@@ -110,7 +110,7 @@ namespace Prolly.Patterns
                 /// <summary>
                 /// Register that a task has been started
                 /// </summary>
-                public override void TaskStarted()
+                public override void MarkExecution()
                 {
                     lock ( _lock )
                     {
@@ -124,7 +124,7 @@ namespace Prolly.Patterns
                 /// <summary>
                 /// Register that a task has finished
                 /// </summary>
-                public override void TaskFinished()
+                public override void MarkCompletion()
                 {
                     lock ( _lock )
                     {

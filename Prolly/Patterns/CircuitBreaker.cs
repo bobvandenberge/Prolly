@@ -94,6 +94,7 @@ namespace Prolly.Patterns
                 /// </summary>
                 public override void MarkSucces()
                 {
+                    Metrics.MarkSucces();
                     if ( State == "half" )
                     {
                         State = "closed";
@@ -107,9 +108,9 @@ namespace Prolly.Patterns
                 /// </summary>
                 public override void MarkFailure()
                 {
-                    Metrics.FailureOccured();
+                    Metrics.MarkFailure();
 
-                    if ( !Metrics.IsHealthy )
+                    if ( Metrics.Failure >= 2 )
                     {
                         State = "open";
                         StartTimer();
@@ -120,7 +121,7 @@ namespace Prolly.Patterns
                 {
                     Task.Factory.StartNew(() =>
                     {
-                        System.Threading.Thread.Sleep(Metrics.TimeOpen);
+                        System.Threading.Thread.Sleep(CircuitBreakerConfiguration.TimeOpen);
                         State = "half";
                     });
                 }
