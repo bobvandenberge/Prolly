@@ -116,6 +116,9 @@ namespace Prolly.Commands
                     _failure++;
                 }
 
+                /// <summary>
+                /// Indicate that a action was succesfull
+                /// </summary>
                 public override void MarkSucces()
                 {
                     _succes++;

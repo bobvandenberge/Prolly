@@ -12,7 +12,7 @@ When you create a new command you have to specify the command group it belongs t
     class DemoCommand : ProllyCommand<string>
     {
         public DemoCommand()
-            :base("DemoCommandGroup")
+            :base(CommandGroupKey.Factory.Resolve("Demo"))
         { }
 
         protected override string Run()
@@ -34,7 +34,7 @@ It might be desirable to return a value instead of an exception when an call cou
     class DemoCommand : ProllyCommand<string>
     {
         public DemoCommand()
-            : base("DemoCommandGroup")
+            : base(CommandGroupKey.Factory.Resolve("Demo"))
         { }
 
         protected override string Run()
@@ -69,11 +69,12 @@ Define the configuration section inside your App/Web.config
 The configurations will automatically be applied.
 
     <prollySettings>
-      <prolly>
-        <timeout miliseconds="200"/>
-        <circuitBreaker allowedFailures="2" openTimeInMiliseconds="200" />
-      </prolly>
-    </prollySettings>
+		<prolly>
+		  <timeout miliseconds="1000"/>
+		  <circuitBreaker allowedFailures="2" openTimeInMiliseconds="200" />
+		  <bulkhead concurrentTasks="2" />
+		</prolly>
+	</prollySettings>
 
 ## Extra ##
 
