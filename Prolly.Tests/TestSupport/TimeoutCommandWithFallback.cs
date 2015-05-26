@@ -15,7 +15,7 @@ namespace Prolly.Tests.TestSupport
         private TimeSpan _timeToSleep;
 
         public TimeoutCommandWithFallback(TimeSpan timeToSleep)
-            : base("TimeoutCommandWithFallback")
+            : base(CommandGroupKey.Factory.Resolve("TimeoutCommandWithFallback"))
         {
             _timeToSleep = timeToSleep;
         }

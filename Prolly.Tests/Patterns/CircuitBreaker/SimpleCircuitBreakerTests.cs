@@ -1,18 +1,26 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prolly.Patterns;
-using Prolly.Patterns.CircuitBreaker;
+using Prolly.Commands;
 
 namespace Prolly.Tests
 {
+
     [TestClass]
     public class SimpleCircuitBreakerTests
     {
+        [TestInitialize()]
+        public void Initialize()
+        {
+            Prolly.Reset();
+        }
+
         [TestMethod]
         public void IsOpen_Default_False()
         {
             // Arrange
-            var sut = new SimpleCircuitBreaker();
+            var key = CommandGroupKey.Factory.Resolve("test");
+            var sut = AbstractCircuitBreaker.Factory.Resolve(key);
 
             // Act
             var result = !sut.AllowRequests;
@@ -25,10 +33,11 @@ namespace Prolly.Tests
         public void TryBreak_Under_Threshold_Doesnt_Brake()
         {
             // Arrange
-            var sut = new SimpleCircuitBreaker();
+            var key = CommandGroupKey.Factory.Resolve("test");
+            var sut = AbstractCircuitBreaker.Factory.Resolve(key);
 
             // Act
-            sut.TryBreak();
+            sut.MarkFailure();
             var result = !sut.AllowRequests;
 
             // Assert
@@ -39,11 +48,12 @@ namespace Prolly.Tests
         public void TryBreak_On_Threshold_Opens_Breaker()
         {
             // Arrange
-            var sut = new SimpleCircuitBreaker();
+            var key = CommandGroupKey.Factory.Resolve("test");
+            var sut = AbstractCircuitBreaker.Factory.Resolve(key);
 
             // Act
-            sut.TryBreak();
-            sut.TryBreak();
+            sut.MarkFailure();
+            sut.MarkFailure();
             var result = !sut.AllowRequests;
 
             // Assert
@@ -54,11 +64,12 @@ namespace Prolly.Tests
         public void Transition_HalfOpen_After_Specified_Time()
         {
             // Arrange
-            var sut = new SimpleCircuitBreaker(2, TimeSpan.FromMilliseconds(0));
+            var key = CommandGroupKey.Factory.Resolve("test");
+            var sut = AbstractCircuitBreaker.Factory.Resolve(key);
 
             // Act
-            sut.TryBreak();
-            sut.TryBreak();
+            sut.MarkFailure();
+            sut.MarkFailure();
 
             // Assert
             while(!sut.AllowRequests) // Just wait for the timer to change the status to HalfOpen
@@ -69,14 +80,15 @@ namespace Prolly.Tests
         public void MarkSucces_Opens_Breaker_If_Half_Open()
         {
             // Arrange
-            var sut = new SimpleCircuitBreaker(2, TimeSpan.FromMilliseconds(0));
+            var key = CommandGroupKey.Factory.Resolve("test");
+            var sut = AbstractCircuitBreaker.Factory.Resolve(key);
 
             // Act
-            sut.TryBreak();
-            sut.TryBreak();
+            sut.MarkFailure();
+            sut.MarkFailure();
             while ( !sut.AllowRequests ) // Just wait for the timer to change the status to HalfOpen
             { }
-            sut.TryRestore();
+            sut.MarkSucces();
             var result = !sut.AllowRequests;
 
             // Assert

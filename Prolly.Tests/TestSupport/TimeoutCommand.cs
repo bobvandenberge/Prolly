@@ -14,7 +14,7 @@ namespace Prolly.Tests.TestSupport
         private TimeSpan _timeToSleep;
 
         public TimeoutCommand(TimeSpan timeToSleep)
-            :base("Timeout")
+            :base(CommandGroupKey.Factory.Resolve("Timeout"))
         {
             _timeToSleep = timeToSleep;
         }

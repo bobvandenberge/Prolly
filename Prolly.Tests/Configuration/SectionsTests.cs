@@ -16,7 +16,7 @@ namespace Prolly.Tests.Configuration
             var result = TimeoutConfiguration.WaitingTime;
 
             // Assert
-            Assert.AreEqual(200, (int) result.TotalMilliseconds);
+            Assert.AreEqual(1000, (int) result.TotalMilliseconds);
         }
 
         [TestMethod]
@@ -40,6 +40,17 @@ namespace Prolly.Tests.Configuration
 
             // Assert
             Assert.AreEqual(200, result);
+        }
+
+        [TestMethod]
+        public void BulkheadConfiguration_ConcurrentTasks_Loaded_From_Configuration()
+        {
+            // Arrange
+            // Act
+            int result = (int) BulkheadConfiguration.ConcurrentTasks;
+
+            // Assert
+            Assert.AreEqual(2, result);
         }
     }
 }

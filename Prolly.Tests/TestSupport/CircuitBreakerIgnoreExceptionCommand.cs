@@ -1,6 +1,5 @@
 ﻿using Prolly.Commands;
 using Prolly.Exceptions;
-using Prolly.Patterns.Timeout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,7 @@ namespace Prolly.Tests.TestSupport
     {
 
         public CircuitBreakerIgnoreExceptionCommand()
-            : base("ExceptionCommand", new SimpleTimeout(TimeSpan.FromSeconds(30)))
+            : base(CommandGroupKey.Factory.Resolve("ExceptionCommand"))
         {
         }
 

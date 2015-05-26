@@ -13,7 +13,7 @@ namespace Prolly.Configuration.Sections
     public class ProllySection : ConfigurationSection
     {
         /// <summary>
-        /// Gets or sets the timeout.
+        /// Gets the timeout.
         /// </summary>
         /// <value>
         /// The timeout.
@@ -28,7 +28,7 @@ namespace Prolly.Configuration.Sections
         }
 
         /// <summary>
-        /// Gets or sets the circuit breaker.
+        /// Gets the circuit breaker.
         /// </summary>
         /// <value>
         /// The circuit breaker.
@@ -39,6 +39,21 @@ namespace Prolly.Configuration.Sections
             get
             {
                 return (CircuitBreakerElement) this["circuitBreaker"];
+            }
+        }
+
+        /// <summary>
+        /// Gets the bulkhead.
+        /// </summary>
+        /// <value>
+        /// The bulkhead.
+        /// </value>
+        [ConfigurationProperty("bulkhead")]
+        public BulkheadElement Bulkhead
+        {
+            get
+            {
+                return (BulkheadElement)this["bulkhead"];
             }
         }
     }

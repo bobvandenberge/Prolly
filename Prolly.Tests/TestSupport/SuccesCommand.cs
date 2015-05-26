@@ -12,7 +12,7 @@ namespace Prolly.Tests.TestSupport
         public const string ReturnValue = "prolly";
 
         public SuccesCommand()
-            : base(String.Empty)
+            : base(CommandGroupKey.Factory.Resolve(String.Empty))
         { }
 
         protected override string Run()

@@ -41,19 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandGroupKey.cs" />
+    <Compile Include="Commands\CommandKey.cs" />
+    <Compile Include="Commands\CommandMetrics.cs" />
+    <Compile Include="Configuration\BulkheadConfiguration.cs" />
     <Compile Include="Configuration\ProllyConfiguration.cs" />
+    <Compile Include="Configuration\Sections\BulkheadElement.cs" />
     <Compile Include="Configuration\Sections\CircuitBreakerElement.cs" />
     <Compile Include="Configuration\Sections\TimeoutElement.cs" />
     <Compile Include="Exceptions\CircuitBreakerIgnoreException.cs" />
-    <Compile Include="Patterns\CircuitBreaker\HealthPolicy.cs" />
-    <Compile Include="Patterns\CircuitBreaker\States\ClosedState.cs" />
-    <Compile Include="Patterns\CircuitBreaker\States\HalfOpenState.cs" />
-    <Compile Include="Patterns\CircuitBreaker\States\ICircuitBreakerState.cs" />
-    <Compile Include="Patterns\CircuitBreaker\States\OpenState.cs" />
-    <Compile Include="Patterns\ICircuitBreaker.cs" />
-    <Compile Include="Patterns\CircuitBreaker\SimpleCircuitBreaker.cs" />
-    <Compile Include="Commands\CommandGroup.cs" />
-    <Compile Include="Commands\CommandGroupFactory.cs" />
+    <Compile Include="Exceptions\MaximumAllowedTasksReachedException.cs" />
+    <Compile Include="Patterns\Bulkhead.cs" />
     <Compile Include="Commands\ProllyCommand.cs" />
     <Compile Include="Configuration\CircuitBreakerConfiguration.cs" />
     <Compile Include="Configuration\Sections\ProllySection.cs" />
@@ -61,10 +59,12 @@
     <Compile Include="Exceptions\CircuitBreakerOpenException.cs" />
     <Compile Include="Exceptions\FallbackNotSpecifiedException.cs" />
     <Compile Include="Exceptions\TaskNotStartedException.cs" />
-    <Compile Include="Patterns\ITimeout.cs" />
+    <Compile Include="Patterns\CircuitBreaker.cs" />
+    <Compile Include="Patterns\Timeout.cs" />
+    <Compile Include="Prolly.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Patterns\Timeout\SimpleTimeout.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

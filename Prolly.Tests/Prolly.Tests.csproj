@@ -50,6 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Commands\CommandKeyTests.cs" />
+    <Compile Include="Commands\CommandGroupKeyTests.cs" />
+    <Compile Include="Patterns\Bulkhead\SimpleBulkheadTests.cs" />
     <Compile Include="Patterns\CircuitBreaker\SimpleCircuitBreakerTests.cs" />
     <Compile Include="Configuration\SectionsTests.cs" />
     <Compile Include="ProllyCommandTests.cs" />
@@ -69,6 +72,7 @@
       <Name>Prolly</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
