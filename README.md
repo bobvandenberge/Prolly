@@ -1,5 +1,9 @@
 # Prolly #
 
+:warning: **NOTE:** I no longer maintain this project, respond to issues, or address PRs. If anyone else would like to take over as a maintainer, please [contact me](https://seoduct.com).
+
+***
+
 Really lightweight and simple Circuit Breaker / Timeout library for .NET. Inspired by Hystrix and Polly
 
 ## Usage ##
